@@ -4,8 +4,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
+import { getServerSession } from "next-auth/next"
 
-const Coba = () => {
+export default function Coba()  {
   const { data: session, status } = useSession()
   const [datasets, setDatasets] = useState([]);
 
@@ -92,4 +93,14 @@ const Coba = () => {
   );
 };
 
-export default Coba;
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await getServerSession(
+        context.req,
+        context.res,
+        authOptions
+      ),
+    },
+  }
+}
